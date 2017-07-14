@@ -5,6 +5,8 @@ import org.omg.PortableInterceptor.INACTIVE;
 
 import javax.persistence.*;
 
+import java.util.Objects;
+
 import static com.comcast.advertisement.campaign.CampaignStatusEnum.INACTIVE;
 
 /**
@@ -107,9 +109,16 @@ public class CampaignEntity {
     @Override
     public boolean equals(Object o){
         CampaignEntity that = (CampaignEntity) o;
-        return this.getCampaignUuid().equals(that.getCampaignUuid().hashCode())
-                && this.getCampaignTitle().equals(that.getCampaignTitle())
-                && this.getId().equals(that.getId());
+        boolean uuidsMatch = (Objects.isNull(this.getCampaignUuid()) && Objects.isNull(that.getCampaignUuid()))
+                || this.getCampaignUuid().equals(that.getCampaignUuid());
+
+        boolean titlesMatch = (Objects.isNull(this.getCampaignTitle()) && Objects.isNull(that.getCampaignTitle()))
+                || (this.getCampaignTitle().equals(that.getCampaignTitle()));
+
+        boolean idsMatch = (Objects.isNull(this.getId()) && Objects.isNull(that.getId()))
+                || (this.getId().equals(that.getId()));
+
+        return uuidsMatch && titlesMatch && idsMatch;
     }
 
     @Override

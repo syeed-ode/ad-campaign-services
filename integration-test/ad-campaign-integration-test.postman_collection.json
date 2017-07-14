@@ -13,6 +13,17 @@
 			"item": [
 				{
 					"name": "POST Create Partner and Campaign",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status is 201\"] = responseCode.code === 201"
+								]
+							}
+						}
+					],
 					"request": {
 						"url": "http://localhost:8080/adcampaign",
 						"method": "POST",
@@ -28,6 +39,68 @@
 							"raw": "{\n\t\"ad_content\":\"Ad Content\",\n\t\"ad_title\":\"Any title is fine\",\n\t\"ad_status\":\"Active\",\n\t\"partner_id\":\"my24dfdxfinity\",\n\t\"duration\":\"86400\"\n}"
 						},
 						"description": "Create initial campaign"
+					},
+					"response": []
+				},
+				{
+					"name": "POST Create new Campaign with same Partner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status is 201\"] = responseCode.code === 201"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\":\"Different Ad Content\",\n\t\"ad_title\":\"Any new title is fine too\",\n\t\"ad_status\":\"Active\",\n\t\"partner_id\":\"my24dfdxfinity\",\n\t\"duration\":\"86400\"\n}"
+						},
+						"description": "New campaign"
+					},
+					"response": []
+				},
+				{
+					"name": "POST Inactive Campaign",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status is 201\"] = responseCode.code === 201"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\":\"Yet another different Ad Content\",\n\t\"ad_title\":\"One more title\",\n\t\"ad_status\":\"Inactive\",\n\t\"partner_id\":\"my24dfdxfinity\",\n\t\"duration\":\"86400\"\n}"
+						},
+						"description": "Assures the active doesn't get overriden."
 					},
 					"response": []
 				}

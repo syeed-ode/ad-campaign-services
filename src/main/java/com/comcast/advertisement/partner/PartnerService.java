@@ -1,6 +1,7 @@
 package com.comcast.advertisement.partner;
 
 import com.comcast.advertisement.campaign.CampaignEntity;
+import com.comcast.advertisement.campaign.CampaignRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +19,25 @@ public class PartnerService {
     @Autowired
     PartnerRepository partnerRepo;
 
-    public PartnerEntity determinePartnerCampainAssociation(PartnerEntity partnerEntity, CampaignEntity campaignEntity) {
-        boolean foundMatch = false;
-        if(!ACTIVE.equals(campaignEntity.getCampaignStatus())) {
-            partnerEntity.getCampaignEntitySet().add(campaignEntity);
-            return partnerRepo.save(partnerEntity);
-        }
+    @Autowired
+    CampaignRepository campaignRepo;
 
-        for(CampaignEntity c : partnerEntity.getCampaignEntitySet()) {
-            if(c.equals(campaignEntity)) {
-                foundMatch = true;
-                c.setCampaignStatus(ACTIVE);
-            } else {
-                c.setCampaignStatus(INACTIVE);
+    public PartnerEntity determinePartnerCampainAssociation(PartnerEntity partnerEntity, CampaignEntity campaignEntity) {
+
+        if(ACTIVE.equals(campaignEntity.getCampaignStatus())) {
+
+            for(CampaignEntity c : partnerEntity.getCampaignEntitySet()) {
+                if(c.equals(campaignEntity)) {
+                    c.setCampaignStatus(ACTIVE);
+                    campaignRepo.save(c);
+                } else if(ACTIVE.equals(c.getCampaignStatus())) {
+                    c.setCampaignStatus(INACTIVE);
+                    campaignRepo.save(c);
+                }
             }
         }
-        if(!foundMatch){
-            partnerEntity.getCampaignEntitySet().add(campaignEntity);
-            campaignEntity.setPartnerEntity(partnerEntity);
-        }
+        partnerEntity.getCampaignEntitySet().add(campaignEntity);
+        campaignEntity.setPartnerEntity(partnerEntity);
         return partnerRepo.save(partnerEntity);
     }
 }
