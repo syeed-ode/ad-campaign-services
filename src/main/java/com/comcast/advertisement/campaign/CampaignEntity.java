@@ -1,10 +1,8 @@
 package com.comcast.advertisement.campaign;
 
 import com.comcast.advertisement.partner.PartnerEntity;
-import org.omg.PortableInterceptor.INACTIVE;
 
 import javax.persistence.*;
-
 import java.util.Objects;
 
 import static com.comcast.advertisement.campaign.CampaignStatusEnum.INACTIVE;

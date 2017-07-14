@@ -25,7 +25,7 @@ public class AdCampaignGetService {
 
     public ResponseEntity<?> getAdCampain(String uuid) {
         AdCampaignResponse response =
-                Optional.of(campaignRepo.findByCampaignUuid(uuid))
+                Optional.ofNullable(campaignRepo.findByCampaignUuid(uuid))
                         .map(e -> AdCampaignResponse.from(e))
                         .orElseThrow(() -> new AdCampaignNotFoundException(uuid + " not present"));
         return ResponseEntity.ok().body(response);

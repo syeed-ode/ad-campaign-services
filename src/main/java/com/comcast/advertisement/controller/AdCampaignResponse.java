@@ -43,11 +43,11 @@ public class AdCampaignResponse {
 
     public static AdCampaignResponse from(CampaignEntity entity){
         String partnerId = Optional
-                .of(entity.getPartnerEntity())
+                .ofNullable(entity.getPartnerEntity())
                 .map(e -> e.getExternalId())
                 .orElse("No partner for this campaign");
         String expirationDate =
-                Optional.of(entity.getExpirationDate() * 1000)
+                Optional.ofNullable(entity.getExpirationDate() * 1000)
                         .map(dateInSeconds -> new Date(dateInSeconds))
                         .map(d -> {
                             DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");

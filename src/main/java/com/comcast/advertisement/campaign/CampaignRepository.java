@@ -1,8 +1,11 @@
 package com.comcast.advertisement.campaign;
 
-import com.comcast.advertisement.partner.PartnerEntity;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Ad Service Application
@@ -14,4 +17,7 @@ import org.springframework.stereotype.Repository;
 public interface CampaignRepository extends CrudRepository<CampaignEntity, Integer> {
     CampaignEntity findByCampaignTitle(String campaignTitle);
     CampaignEntity findByCampaignUuid(String campaignUuid);
+
+    @Query(value = "select * from CAMPAIGN c where c.EXPIRATION_IN_EPOCH = ?1", nativeQuery = true)
+    List<CampaignEntity> findActiveCampainsByExpirationDate(@Param("expirationDate") Integer expirationDate);
 }

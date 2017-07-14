@@ -7,7 +7,7 @@ A simple web application that allows a user to create ad campaigns.
 # - executes unit tests
 # - generates jar
 ###############################
-<project_dir> $ gradle build
+<project_dir> $ ./gradlew build
 <project_dir> $ java -jar ./build/libs/advertisement-campaign-services-0.0.1-SNAPSHOT.jar
 
 

@@ -2,8 +2,11 @@ package com.comcast.advertisement.controller;
 
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
 import com.comcast.advertisement.services.rest.AdCampaignGetService;
+import com.comcast.advertisement.services.rest.search.AdCampaignSearch;
+import com.comcast.advertisement.services.rest.search.AdCampaignSearchFactory;
 import com.comcast.advertisement.validation.AdValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +31,24 @@ public class AdCampaignController {
     @Autowired
     AdCampaignGetService getService;
 
+    @Autowired
+    AdCampaignSearchFactory searchFactory;
+
     @RequestMapping(value = "/adcampaign", method = RequestMethod.GET)
-    public ResponseEntity<?> linkListAdder(@RequestParam(value="uuid") String uuidRequested) {
+    public ResponseEntity<?> getCampaign(@RequestParam(value="uuid") String uuidRequested) {
         return getService.getAdCampain(uuidRequested);
     }
 
     @RequestMapping(value = "/adcampaign", method = RequestMethod.POST)
-    public ResponseEntity<?> linkListAdder(@RequestBody @Valid AdCampaignCreateRequest request, BindingResult result) {
+    public ResponseEntity<?> createAdCampaign(@RequestBody @Valid AdCampaignCreateRequest request, BindingResult result) {
         validationService.validateCreateRequest(result);
         return createService.create(request);
+    }
+
+
+    @RequestMapping(value = "/adcampaign/search", method = RequestMethod.POST)
+    public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest request) {
+        AdCampaignSearch searchService = searchFactory.getSearchService(request);
+        return searchService.search();
     }
 }
