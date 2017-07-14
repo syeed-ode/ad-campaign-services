@@ -1,0 +1,37 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ad-campaign-integration-test",
+		"_postman_id": "92ee9ac2-e077-d186-20da-84668c1d48d2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "partner-campaign",
+			"description": "",
+			"item": [
+				{
+					"name": "POST Create Partner and Campaign",
+					"request": {
+						"url": "http://localhost:8080/adcampaign",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\":\"Ad Content\",\n\t\"ad_title\":\"Any title is fine\",\n\t\"ad_status\":\"Active\",\n\t\"partner_id\":\"my24dfdxfinity\",\n\t\"duration\":\"86400\"\n}"
+						},
+						"description": "Create initial campaign"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
