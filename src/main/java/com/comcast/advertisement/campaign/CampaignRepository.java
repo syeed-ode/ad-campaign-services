@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CampaignRepository extends CrudRepository<CampaignEntity, Integer> {
     CampaignEntity findByCampaignTitle(String campaignTitle);
+    CampaignEntity findByCampaignUuid(String campaignUuid);
 }

@@ -103,6 +103,56 @@
 						"description": "Assures the active doesn't get overriden."
 					},
 					"response": []
+				},
+				{
+					"name": "GET Individual User Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"User actually exists\"] = responseCode.code === 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/adcampaign?uuid=5db3696c-72ae-4f76-8098-22e9bc0e75a6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adcampaign"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "5db3696c-72ae-4f76-8098-22e9bc0e75a6",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\":\"Yet another different Ad Content\",\n\t\"ad_title\":\"One more title\",\n\t\"ad_status\":\"Inactive\",\n\t\"partner_id\":\"my24dfdxfinity\",\n\t\"duration\":\"86400\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		}

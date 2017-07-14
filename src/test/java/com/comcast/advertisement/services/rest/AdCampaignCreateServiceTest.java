@@ -1,7 +1,7 @@
 package com.comcast.advertisement.services.rest;
 
 import com.comcast.advertisement.campaign.*;
-import com.comcast.advertisement.controller.AdCampaignRequest;
+import com.comcast.advertisement.controller.AdCampaignCreateRequest;
 import com.comcast.advertisement.partner.PartnerEntity;
 import com.comcast.advertisement.partner.PartnerRepository;
 import com.comcast.advertisement.partner.PartnerService;
@@ -13,10 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
@@ -185,8 +182,8 @@ public class AdCampaignCreateServiceTest {
         return campaignEntity;
     }
 
-    private AdCampaignRequest validRequest() {
-        AdCampaignRequest validRequest = new AdCampaignRequest();
+    private AdCampaignCreateRequest validRequest() {
+        AdCampaignCreateRequest validRequest = new AdCampaignCreateRequest();
         validRequest.setAdContent(CONTENT);
         validRequest.setAdStatus(ACTIVE.valueOf());
         validRequest.setExternalPartnerId(PARTNER_ID);

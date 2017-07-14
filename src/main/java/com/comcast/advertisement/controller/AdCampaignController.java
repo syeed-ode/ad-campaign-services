@@ -1,14 +1,12 @@
 package com.comcast.advertisement.controller;
 
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
+import com.comcast.advertisement.services.rest.AdCampaignGetService;
 import com.comcast.advertisement.validation.AdValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,13 +25,16 @@ public class AdCampaignController {
     @Autowired
     AdCampaignCreateService createService;
 
-    @RequestMapping(value = "/adcampaign/{uuid}", method = RequestMethod.GET)
-    public String linkListAdder(String uuid) {
-            return "Hello World\n" + uuid;
+    @Autowired
+    AdCampaignGetService getService;
+
+    @RequestMapping(value = "/adcampaign", method = RequestMethod.GET)
+    public ResponseEntity<?> linkListAdder(@RequestParam(value="uuid") String uuidRequested) {
+        return getService.getAdCampain(uuidRequested);
     }
 
     @RequestMapping(value = "/adcampaign", method = RequestMethod.POST)
-    public ResponseEntity<?> linkListAdder(@RequestBody @Valid AdCampaignRequest request, BindingResult result) {
+    public ResponseEntity<?> linkListAdder(@RequestBody @Valid AdCampaignCreateRequest request, BindingResult result) {
         validationService.validateCreateRequest(result);
         return createService.create(request);
     }

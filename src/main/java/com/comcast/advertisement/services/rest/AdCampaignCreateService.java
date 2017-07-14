@@ -4,7 +4,7 @@ import com.comcast.advertisement.campaign.CampaignDto;
 import com.comcast.advertisement.campaign.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
 import com.comcast.advertisement.campaign.CampaignStatusEnum;
-import com.comcast.advertisement.controller.AdCampaignRequest;
+import com.comcast.advertisement.controller.AdCampaignCreateRequest;
 import com.comcast.advertisement.partner.PartnerEntity;
 import com.comcast.advertisement.partner.PartnerRepository;
 import com.comcast.advertisement.partner.PartnerService;
@@ -43,7 +43,7 @@ public class AdCampaignCreateService {
     @Autowired
     PartnerService patnerService;
 
-    public ResponseEntity<?> create(AdCampaignRequest validRequest) {
+    public ResponseEntity<?> create(AdCampaignCreateRequest validRequest) {
         PartnerEntity partner = createPartner(validRequest.getExternalPartnerId());
         CampaignEntity campaign = createCampaign(fromRequest(validRequest));
         partner = patnerService.determinePartnerCampainAssociation(partner, campaign);

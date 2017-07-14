@@ -1,6 +1,6 @@
 package com.comcast.advertisement.campaign;
 
-import com.comcast.advertisement.controller.AdCampaignRequest;
+import com.comcast.advertisement.controller.AdCampaignCreateRequest;
 
 /**
  * Ad Service Application
@@ -21,7 +21,7 @@ public class CampaignDto {
         this.adStatus = status;
     }
 
-    public static CampaignDto fromRequest(AdCampaignRequest request) {
+    public static CampaignDto fromRequest(AdCampaignCreateRequest request) {
         return new CampaignDto(request.getAdTitle(), request.getAdContent(),request.getDuration(), request.getAdStatus());
     }
 

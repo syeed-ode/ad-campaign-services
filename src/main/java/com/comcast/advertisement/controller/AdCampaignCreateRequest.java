@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  * Date: 7/13/17
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AdCampaignRequest {
+public class AdCampaignCreateRequest {
     // unique_string_representing_partner
     @NotNull
     @JsonProperty("partner_id")

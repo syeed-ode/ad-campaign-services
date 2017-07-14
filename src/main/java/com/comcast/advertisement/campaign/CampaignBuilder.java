@@ -1,6 +1,6 @@
 package com.comcast.advertisement.campaign;
 
-import com.comcast.advertisement.controller.AdCampaignRequest;
+import com.comcast.advertisement.controller.AdCampaignCreateRequest;
 
 /**
  * Ad Service Application
@@ -34,7 +34,7 @@ public class CampaignBuilder {
         return  this;
     }
 
-    public static CampaignEntity build(AdCampaignRequest request, String uuid, CampaignStatusEnum status) {
+    public static CampaignEntity build(AdCampaignCreateRequest request, String uuid, CampaignStatusEnum status) {
         CampaignBuilder builder = new CampaignBuilder();
         builder.campaignContent(request.getAdContent())
                 .compaignUuid(uuid)
