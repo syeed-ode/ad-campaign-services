@@ -1,5 +1,6 @@
 package com.comcast.advertisement.campaign;
 
+import com.comcast.advertisement.partner.PartnerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,8 +18,10 @@ import java.util.List;
 public interface CampaignRepository extends JpaRepository<CampaignEntity, Integer> {
     CampaignEntity findByCampaignTitle(String campaignTitle);
     CampaignEntity findByCampaignUuid(String campaignUuid);
+    CampaignEntity findByCampaignStatusAndPartnerEntity(CampaignStatusEnum campaignStatus, PartnerEntity partnerEntity);
 
 
+    List<CampaignEntity> findAll();
     List<CampaignEntity> findByExpirationDateIsGreaterThanEqual(Integer expirationDate);
     List<CampaignEntity> findByCampaignTitleAndExpirationDateIsGreaterThanEqual(String campaignTitle, Integer expirationDate);
     List<CampaignEntity> findByCampaignContent(String campaignContent);

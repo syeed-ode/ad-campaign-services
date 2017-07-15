@@ -420,6 +420,68 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "UPDATE Update user data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Succesfully updated ad conent\"] = responseCode.code === 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/1ffa3a99-e3ad-4ff3-b41c-7c7a12507c4e",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\": \" Ad Content\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET Collect all campaigns",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Succesfully updated ad conent\"] = responseCode.code === 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaigns",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\": \"Content for ads\",\n\t\"ad_title\": \"New title for this ad\",\n\t\"ad_status\": \"Active\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		}

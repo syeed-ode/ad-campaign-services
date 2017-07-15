@@ -24,7 +24,7 @@ public enum CampaignStatusEnum {
         return Arrays.stream(CampaignStatusEnum.values())
                 .filter(s -> s.valueOf().equalsIgnoreCase(string))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("value not CampaignStatusEnum"));
+                .orElseThrow(() -> new NoSuchElementException(string + " not valid campaign status"));
     }
 
     public String valueOf(){
