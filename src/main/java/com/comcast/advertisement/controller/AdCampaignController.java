@@ -3,10 +3,9 @@ package com.comcast.advertisement.controller;
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
 import com.comcast.advertisement.services.rest.AdCampaignGetService;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearch;
-import com.comcast.advertisement.services.rest.search.AdCampaignSearchFactory;
+import com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceFactory;
 import com.comcast.advertisement.validation.AdValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,10 @@ public class AdCampaignController {
     AdCampaignGetService getService;
 
     @Autowired
-    AdCampaignSearchFactory searchFactory;
+    AdCampaignSearchServiceFactory searchFactory;
+
+//    @Autowired
+//    AdCampaignSearch searchService;
 
     @RequestMapping(value = "/adcampaign", method = RequestMethod.GET)
     public ResponseEntity<?> getCampaign(@RequestParam(value="uuid") String uuidRequested) {
@@ -47,8 +49,9 @@ public class AdCampaignController {
 
 
     @RequestMapping(value = "/adcampaign/search", method = RequestMethod.POST)
-    public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest request) {
-        AdCampaignSearch searchService = searchFactory.getSearchService(request);
-        return searchService.search();
+    public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest searchRequest) {
+        AdCampaignSearch searchService = searchFactory.getSearchService(searchRequest);
+        return searchService.search(searchRequest);
     }
+
 }
