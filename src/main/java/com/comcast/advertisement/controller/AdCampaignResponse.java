@@ -21,6 +21,9 @@ public class AdCampaignResponse {
     @JsonProperty("partner_id")
     private final String externalPartnerId;
 
+    @JsonProperty("campaign_uuid")
+    private final String campaignUuid;
+
     @JsonProperty("duration")
     private final String duration;
 
@@ -33,8 +36,14 @@ public class AdCampaignResponse {
     @JsonProperty("ad_status")
     private final String adStatus;
 
-    private AdCampaignResponse(String externalPartnerId, String duration, String adContent, String adTitle, String adStatus) {
+    private AdCampaignResponse(String externalPartnerId
+            , String campaignUuid
+            , String duration
+            , String adContent
+            , String adTitle
+            , String adStatus) {
         this.externalPartnerId = externalPartnerId;
+        this.campaignUuid = campaignUuid;
         this.duration = duration;
         this.adContent = adContent;
         this.adTitle = adTitle;
@@ -47,13 +56,11 @@ public class AdCampaignResponse {
                 .map(e -> e.getExternalId())
                 .orElse("No partner for this campaign");
         String expirationDate =
-                Optional.ofNullable(entity.getExpirationDate() * 1000)
-                        .map(dateInSeconds -> new Date(dateInSeconds))
-                        .map(d -> {
-                            DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                            return df.format(d);
-                        }).orElse("Expired for more than a day");
+                Optional.ofNullable(entity.getExpirationDate())
+                        .map(i -> String.valueOf(i))
+                        .orElse("Expired for more than a day");
         return new AdCampaignResponse(partnerId
+                , entity.getCampaignUuid()
                 , expirationDate
                 , entity.getCampaignContent()
                 , entity.getCampaignTitle()

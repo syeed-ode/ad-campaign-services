@@ -3,7 +3,6 @@ package com.comcast.advertisement.services.rest.search;
 import com.comcast.advertisement.campaign.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
 import com.comcast.advertisement.controller.AdCampaignSearchRequest;
-import com.comcast.advertisement.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -28,15 +27,11 @@ public class AdCampaignSearchByDurationAndTitle implements AdCampaignSearch {
     @Autowired
     CampaignRepository campaignRepo;
 
-    @Autowired
-    DateUtility dateTime;
-
-
     @Override
     public ResponseEntity<?> search(AdCampaignSearchRequest request) {
         String duration = request.getDuration();
         String title = request.getAdTitle();
-        Integer timeToLookFor = dateTime.getTimeInEpoch() - Integer.valueOf(duration);
+        Integer timeToLookFor = Integer.valueOf(duration);
         List<CampaignEntity> activeCampainsByDate = campaignRepo
                 .findByCampaignTitleAndExpirationDateIsGreaterThanEqual(title, timeToLookFor);
         if(CollectionUtils.isEmpty(activeCampainsByDate)){

@@ -9,7 +9,6 @@ import com.comcast.advertisement.partner.PartnerEntity;
 import com.comcast.advertisement.partner.PartnerRepository;
 import com.comcast.advertisement.partner.PartnerService;
 import com.comcast.advertisement.utilities.AdCampaingUuidGenerator;
-import com.comcast.advertisement.utilities.DateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Objects;
 
 import static com.comcast.advertisement.campaign.CampaignDto.fromRequest;
+import static com.comcast.advertisement.controller.AdCampaignResponse.from;
 
 /**
  * Ad Service Application
@@ -35,9 +35,6 @@ public class AdCampaignCreateService {
     PartnerRepository partnerRepo;
 
     @Autowired
-    DateUtility dateTime;
-
-    @Autowired
     AdCampaingUuidGenerator uuidGenerator;
 
     @Autowired
@@ -51,7 +48,7 @@ public class AdCampaignCreateService {
                 .fromHttpUrl("http://127.0.0.1")
                 .path("adcampaign/")
                 .path(partner.getPartnerUuid())
-                .build().toUri()).build();
+                .build().toUri()).body(from(campaign));
     }
 
     protected PartnerEntity createPartner(String externalPartnerId) {
@@ -75,7 +72,7 @@ public class AdCampaignCreateService {
             campain.setCampaignContent(dto.getCampainContent());
             campain.setCampaignTitle(dto.getCampainTitle());
             campain.setCampaignUuid(uuidGenerator.uuid());
-            campain.setExpirationDate(dto.getExpirationDateInSeconds() + dateTime.getTimeInEpoch());
+            campain.setExpirationDate(dto.getExpirationDateInSeconds());
             campaignEntity = campaignRepo.save(campain);
         }
         campaignEntity.setCampaignStatus(CampaignStatusEnum.from(dto.getAdStatus()));
