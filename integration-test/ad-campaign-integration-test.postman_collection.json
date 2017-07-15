@@ -19,7 +19,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status is 201\"] = responseCode.code === 201"
+									"tests[\"Created initial campaign for partner\"] = responseCode.code === 201"
 								]
 							}
 						}
@@ -50,7 +50,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status is 201\"] = responseCode.code === 201"
+									"tests[\"Created 2nd campaign for partner\"] = responseCode.code === 201"
 								]
 							}
 						}
@@ -81,7 +81,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status is 201\"] = responseCode.code === 201"
+									"tests[\"Generated inactive campaign\"] = responseCode.code === 201"
 								]
 							}
 						}
@@ -149,6 +149,273 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"ad_content\":\"Yet another different Ad Content\",\n\t\"ad_title\":\"One more title\",\n\t\"ad_status\":\"Inactive\",\n\t\"partner_id\":\"my24dfdxfinity\",\n\t\"duration\":\"86400\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET User Not Found Retuns 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"User not present response code\"] = responseCode.code === 404"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/adcampaign?uuid=5db3696c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"adcampaign"
+							],
+							"query": [
+								{
+									"key": "uuid",
+									"value": "5db3696c",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\":\"Yet another different Ad Content\",\n\t\"ad_title\":\"One more title\",\n\t\"ad_status\":\"Inactive\",\n\t\"partner_id\":\"my24dfdxfinity\",\n\t\"duration\":\"86400\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH Find by duration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Campaigns with duration found\"] = responseCode.code === 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"duration\":\"432000\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH Find by duration fails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Campaign with duration does not exist\"] = responseCode.code === 404"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"duration\":\"10\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH Find by title & duration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Found title and duration\"] = responseCode.code === 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_title\": \"Any new title is fine too\",\n\t\"duration\":\"432000\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH Find by title",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Found title in data store\"] = responseCode.code === 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_title\": \"Any title is fine\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH Find by title fails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Given title does not exist\"] = responseCode.code === 404"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_title\": \"This is an ad title\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH Find by content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Search for content found\"] = responseCode.code === 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\": \"Different Ad Content\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH Find by content fails",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Search for contnet; content not found\"] = responseCode.code === 404"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/adcampaign/search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ad_content\": \" Ad Content\"\n}"
 						},
 						"description": ""
 					},
