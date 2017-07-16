@@ -1,22 +1,20 @@
 package com.comcast.advertisement.services.rest;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
 import com.comcast.advertisement.controller.AdCampaignResponse;
 import com.comcast.advertisement.exception.AdCampaignNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.comcast.advertisement.controller.AdCampaignResponse.from;
 import static java.util.stream.Collectors.toSet;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 /**
  * Ad Service Application
@@ -31,21 +29,22 @@ public class AdCampaignGetService {
     CampaignRepository campaignRepo;
 
     public ResponseEntity<?> getAdCampain(String uuid) {
-        AdCampaignResponse response =
-                Optional.ofNullable(campaignRepo.findByCampaignUuid(uuid))
+        return Optional.ofNullable(campaignRepo.findByCampaignUuid(uuid))
                         .map(e -> from(e))
-                        .orElseThrow(() -> new AdCampaignNotFoundException(uuid + " not present"));
-        return ResponseEntity.ok().body(response);
+                        .map(res -> {
+                            ResponseEntity r = ResponseEntity.ok().body(res);
+                            return r;
+                        })
+                        .orElse(ResponseEntity.status(NOT_FOUND).body(uuid + " not present"));
     }
 
     public ResponseEntity<?> getAdCampains() {
-        Set<AdCampaignResponse> set = campaignRepo.findAll().stream()
-                .filter(Objects::nonNull)
-                .map(ent -> from(ent))
-                .collect(toSet());
-        if(CollectionUtils.isEmpty(set)){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No campaigns found");
-        }
-        return ResponseEntity.ok().body(set);
+        return Optional.ofNullable(campaignRepo.findAll())
+                .map(entityList -> entityList.stream()
+                        .map(ent -> from(ent))
+                        .collect(toSet()))
+                .filter(set -> !CollectionUtils.isEmpty(set))
+                .map(set -> ResponseEntity.ok().body(set))
+                .orElse(ResponseEntity.status(NO_CONTENT).body(new HashSet<>()));
     }
 }

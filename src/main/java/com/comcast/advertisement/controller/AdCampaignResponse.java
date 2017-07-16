@@ -4,9 +4,6 @@ import com.comcast.advertisement.campaign.CampaignEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -65,5 +62,29 @@ public class AdCampaignResponse {
                 , entity.getCampaignContent()
                 , entity.getCampaignTitle()
                 , entity.getCampaignStatus().valueOf());
+    }
+
+    public String getExternalPartnerId() {
+        return externalPartnerId;
+    }
+
+    public String getCampaignUuid() {
+        return campaignUuid;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public String getAdContent() {
+        return adContent;
+    }
+
+    public String getAdTitle() {
+        return adTitle;
+    }
+
+    public String getAdStatus() {
+        return adStatus;
     }
 }

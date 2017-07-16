@@ -1,5 +1,6 @@
 package com.comcast.advertisement.services.rest;
 
+import com.comcast.advertisement.AdCampaignBaseTest;
 import com.comcast.advertisement.campaign.*;
 import com.comcast.advertisement.controller.AdCampaignCreateRequest;
 import com.comcast.advertisement.partner.PartnerEntity;
@@ -35,19 +36,7 @@ import static org.springframework.http.HttpStatus.CREATED;
  * Date: 7/14/17
  */
 @RunWith(MockitoJUnitRunner.class)
-public class AdCampaignCreateServiceTest {
-
-    private static String PARTNER_ID          = "2300430";
-    private static String CONTENT             = "Gppd content";
-    private static String TITLE               = "Good title to use";
-    private static Integer ACTIVE_TIME        = 86400;
-    private static String GODD_PART_UUID      = "4d106688-this-isa-good-partnerid";
-
-    private static String CAMPAIGN_TITLE      = "Good title";
-    private static String GODD_CAMP_UUID      = "4d106688-this-isa-good-campainid";
-    private static final Long CURRENT_TIME    = new Date().getTime();
-    private static String INItiAL_CAMP_STATUS = "inactive";
-
+public class AdCampaignCreateServiceTest implements AdCampaignBaseTest {
 
     @InjectMocks
     AdCampaignCreateService service;
@@ -117,14 +106,6 @@ public class AdCampaignCreateServiceTest {
         assertPartnerValues(result);
     }
 
-    private PartnerEntity goodPartnerEntity() {
-        PartnerEntity partnerEntity = new PartnerEntity();
-        partnerEntity.setExternalId(PARTNER_ID);
-        partnerEntity.setPartnerUuid(GODD_PART_UUID);
-        partnerEntity.setId(1);
-        return partnerEntity;
-    }
-
     private void assertPartnerValues(PartnerEntity result) {
         assertEquals(PARTNER_ID, result.getExternalId());
         assertEquals(GODD_PART_UUID, result.getPartnerUuid());
@@ -168,18 +149,6 @@ public class AdCampaignCreateServiceTest {
         Integer time = dto().getExpirationDateInSeconds() + Integer.valueOf(CURRENT_TIME.intValue());
         assertEquals(time, result.getExpirationDate());
         assertNotNull(result.getId());
-    }
-
-    private CampaignEntity goodCampaignEntity() {
-        CampaignEntity campaignEntity = new CampaignEntity();
-        campaignEntity.setPartnerEntity(goodPartnerEntity());
-        campaignEntity.setCampaignStatus(from(INItiAL_CAMP_STATUS));
-        campaignEntity.setCampaignUuid(GODD_CAMP_UUID);
-        campaignEntity.setExpirationDate(ACTIVE_TIME + CURRENT_TIME.intValue());
-        campaignEntity.setCampaignContent(CONTENT);
-        campaignEntity.setId(1);
-        campaignEntity.setCampaignTitle(TITLE);
-        return campaignEntity;
     }
 
     private AdCampaignCreateRequest validRequest() {
