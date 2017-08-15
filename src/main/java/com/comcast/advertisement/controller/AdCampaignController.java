@@ -3,15 +3,22 @@ package com.comcast.advertisement.controller;
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
 import com.comcast.advertisement.services.rest.AdCampaignGetService;
 import com.comcast.advertisement.services.rest.AdCampaignUpdateService;
+import com.comcast.advertisement.services.rest.patch.AdCampaignPatchService;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearch;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceFactory;
 import com.comcast.advertisement.validation.AdValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
+
+import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGN;
+import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGNS;
+import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGN_SEARCH;
 
 /**
  * Ad Service Application
@@ -37,24 +44,27 @@ public class AdCampaignController {
     @Autowired
     AdCampaignUpdateService updateService;
 
-    @RequestMapping(value = "/adcampaign", method = RequestMethod.GET)
+    @Autowired
+    AdCampaignPatchService patchService;
+
+    @RequestMapping(value = AD_CAMPAIGN, method = RequestMethod.GET)
     public ResponseEntity<?> getCampaign(@RequestParam(value="uuid") String uuidRequested) {
         return getService.getAdCampain(uuidRequested);
     }
 
-    @RequestMapping(value = "/adcampaigns", method = RequestMethod.GET)
+    @RequestMapping(value = AD_CAMPAIGNS, method = RequestMethod.GET)
     public ResponseEntity<?> getCampaigns() {
         return getService.getAdCampains();
     }
 
-    @RequestMapping(value = "/adcampaign", method = RequestMethod.POST)
+    @RequestMapping(value = AD_CAMPAIGN, method = RequestMethod.POST)
     public ResponseEntity<?> createAdCampaign(@RequestBody @Valid AdCampaignCreateRequest request, BindingResult result) {
         validationService.validateCreateRequest(result);
         return createService.create(request);
     }
 
 
-    @RequestMapping(value = "/adcampaign/search", method = RequestMethod.POST)
+    @RequestMapping(value = AD_CAMPAIGN_SEARCH, method = RequestMethod.POST)
     public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest searchRequest) {
         AdCampaignSearch searchService = searchFactory.getSearchService(searchRequest);
         return searchService.search(searchRequest);
@@ -63,5 +73,14 @@ public class AdCampaignController {
     @RequestMapping(value = "/adcampaign/{uuid}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateAdCampaign(@RequestBody AdCampaignUpdateRequest updateRequest, @PathVariable("uuid") String uuid) {
         return updateService.updateCampaign(updateRequest, uuid);
+    }
+
+//    @RequestMapping(value = "/adcampaign/{uuid}", method = RequestMethod.PATCH)
+    @RequestMapping(value = AD_CAMPAIGN, method = RequestMethod.PATCH)
+    public ResponseEntity<?> patchAdCampaign(@RequestBody Map<String, String> requestMap){//, @PathVariable("uuid") String uuid) {
+        if(CollectionUtils.isEmpty(requestMap)){
+            return ResponseEntity.badRequest().body("Valid fields are: ad_content");
+        }
+        return patchService.patch(requestMap);
     }
 }

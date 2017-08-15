@@ -38,6 +38,6 @@ public class CampaignDto {
     }
 
     public Integer getExpirationDateInSeconds() {
-        return expirationDateInSeconds;
+        return Integer.valueOf(expirationDateInSeconds);
     }
 }

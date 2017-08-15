@@ -20,7 +20,6 @@ public enum CampaignStatusEnum {
     }
 
     public static CampaignStatusEnum from(String string){
-
         return Arrays.stream(CampaignStatusEnum.values())
                 .filter(s -> s.valueOf().equalsIgnoreCase(string))
                 .findFirst()
