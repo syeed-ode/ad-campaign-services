@@ -1,6 +1,6 @@
 package com.comcast.advertisement;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.partner.PartnerEntity;
 
 import java.util.Date;

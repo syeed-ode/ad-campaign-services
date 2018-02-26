@@ -2,7 +2,7 @@ package com.comcast.advertisement.services.rest;
 
 import com.comcast.advertisement.AdCampaignBaseTest;
 import com.comcast.advertisement.campaign.CampaignRepository;
-import com.comcast.advertisement.controller.AdCampaignResponse;
+import com.comcast.advertisement.controller.dto.AdCampaignResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,11 +17,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Ad Service Application

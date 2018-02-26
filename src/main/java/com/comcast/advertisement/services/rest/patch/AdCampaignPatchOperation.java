@@ -1,6 +1,6 @@
 package com.comcast.advertisement.services.rest.patch;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;

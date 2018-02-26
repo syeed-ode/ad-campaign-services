@@ -1,6 +1,6 @@
 package com.comcast.advertisement.partner;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,8 @@
 package com.comcast.advertisement.services.rest;
 
 import com.comcast.advertisement.campaign.CampaignDto;
-import com.comcast.advertisement.campaign.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
-import com.comcast.advertisement.campaign.CampaignStatusEnum;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.controller.AdCampaignCreateRequest;
 import com.comcast.advertisement.partner.PartnerEntity;
 import com.comcast.advertisement.partner.PartnerRepository;
@@ -17,7 +16,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Objects;
 
 import static com.comcast.advertisement.campaign.CampaignDto.fromRequest;
-import static com.comcast.advertisement.controller.AdCampaignResponse.from;
+import static com.comcast.advertisement.campaign.CampaignStatusEnum.from;
+import static com.comcast.advertisement.campaign.dto.CampaignBuilder.build;
+import static com.comcast.advertisement.controller.dto.AdCompaignBuilder.build;
 
 /**
  * Ad Service Application
@@ -48,7 +49,7 @@ public class AdCampaignCreateService {
                 .fromHttpUrl("http://127.0.0.1")
                 .path("adcampaign/")
                 .path(partner.getPartnerUuid())
-                .build().toUri()).body(from(campaign));
+                .build().toUri()).body(build(campaign));
     }
 
     protected PartnerEntity createPartner(String externalPartnerId) {
@@ -68,14 +69,10 @@ public class AdCampaignCreateService {
     protected CampaignEntity createCampaign(CampaignDto dto) {
         CampaignEntity campaignEntity = campaignRepo.findByCampaignTitle(dto.getCampainTitle());
         if(Objects.isNull(campaignEntity)) {
-            CampaignEntity campain = new CampaignEntity();
-            campain.setCampaignContent(dto.getCampainContent());
-            campain.setCampaignTitle(dto.getCampainTitle());
-            campain.setCampaignUuid(uuidGenerator.uuid());
-            campain.setExpirationDate(dto.getExpirationDateInSeconds());
+            CampaignEntity campain = build(dto, uuidGenerator.uuid());
             campaignEntity = campaignRepo.save(campain);
         }
-        campaignEntity.setCampaignStatus(CampaignStatusEnum.from(dto.getAdStatus()));
+        campaignEntity.setCampaignStatus(from(dto.getAdStatus()));
         return campaignEntity;
     }
 

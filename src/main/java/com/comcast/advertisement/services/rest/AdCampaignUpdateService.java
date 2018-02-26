@@ -1,8 +1,8 @@
 package com.comcast.advertisement.services.rest;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
 import com.comcast.advertisement.campaign.CampaignStatusEnum;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.controller.AdCampaignUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-import static com.comcast.advertisement.campaign.CampaignStatusEnum.ACTIVE;
-import static com.comcast.advertisement.campaign.CampaignStatusEnum.INACTIVE;
-import static com.comcast.advertisement.campaign.CampaignStatusEnum.from;
-import static com.comcast.advertisement.controller.AdCampaignResponse.from;
+import static com.comcast.advertisement.campaign.CampaignStatusEnum.*;
+import static com.comcast.advertisement.controller.dto.AdCompaignBuilder.build;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -50,7 +48,7 @@ public class AdCampaignUpdateService {
         processCampaignStatus(updateRequest, campaignEntity);
 
         campaignRepo.save(campaignEntity);
-        return ResponseEntity.ok(from(campaignEntity));
+        return ResponseEntity.ok(build(campaignEntity));
     }
 
     private void processCampaignStatus(AdCampaignUpdateRequest updateRequest, CampaignEntity entity) {

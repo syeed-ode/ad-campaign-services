@@ -2,6 +2,7 @@ package com.comcast.advertisement.services.rest;
 
 import com.comcast.advertisement.AdCampaignBaseTest;
 import com.comcast.advertisement.campaign.*;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.controller.AdCampaignCreateRequest;
 import com.comcast.advertisement.partner.PartnerEntity;
 import com.comcast.advertisement.partner.PartnerRepository;
@@ -17,10 +18,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
-
 import static com.comcast.advertisement.campaign.CampaignStatusEnum.ACTIVE;
-import static com.comcast.advertisement.campaign.CampaignStatusEnum.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;

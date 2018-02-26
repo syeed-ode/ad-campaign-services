@@ -1,5 +1,6 @@
-package com.comcast.advertisement.campaign;
+package com.comcast.advertisement.campaign.dto;
 
+import com.comcast.advertisement.campaign.CampaignStatusEnum;
 import com.comcast.advertisement.partner.PartnerEntity;
 
 import javax.persistence.*;
@@ -44,8 +45,12 @@ public class CampaignEntity {
 
     }
 
-    protected CampaignEntity(CampaignBuilder builder, String uuid) {
-        campaignUuid = uuid;
+    protected CampaignEntity(CampaignBuilder builder) {
+        campaignUuid    = builder.getCompaignUuid();
+        campaignContent = builder.getCampaignContent();
+        campaignStatus  = builder.getCampaignStatus();
+        campaignTitle   = builder.getCampaignTitle();
+        expirationDate  = builder.getExpirationDate();
     }
 
     public Integer getId() {

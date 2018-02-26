@@ -1,13 +1,12 @@
 package com.comcast.advertisement.services.rest.patch;
 
+import com.comcast.advertisement.controller.dto.AdCompaignBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.comcast.advertisement.controller.AdCampaignResponse.from;
 import static com.comcast.advertisement.services.rest.patch.AdCampaignPatchOperation.AD_CONTENT;
 import static com.comcast.advertisement.services.rest.patch.AdCampaignPatchOperation.from;
 import static java.util.stream.Collectors.joining;
@@ -28,7 +27,7 @@ public class AdCampaignPatchService {
     public ResponseEntity<?> patch(Map<String, String> request) {
         request.entrySet().stream()
                 .map(entry -> from(entry.getKey()).operate(entry.getValue()))
-                .map(entity -> from(entity))
+                .map(AdCompaignBuilder::build)
                 .collect(toSet());
         return ResponseEntity.ok("Didn't blow up" + request.entrySet()
                 .stream()

@@ -19,6 +19,7 @@ import java.util.Map;
 import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGN;
 import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGNS;
 import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGN_SEARCH;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Ad Service Application
@@ -47,36 +48,35 @@ public class AdCampaignController {
     @Autowired
     AdCampaignPatchService patchService;
 
-    @RequestMapping(value = AD_CAMPAIGN, method = RequestMethod.GET)
+    @RequestMapping(value = AD_CAMPAIGN, method = GET)
     public ResponseEntity<?> getCampaign(@RequestParam(value="uuid") String uuidRequested) {
         return getService.getAdCampain(uuidRequested);
     }
 
-    @RequestMapping(value = AD_CAMPAIGNS, method = RequestMethod.GET)
+    @RequestMapping(value = AD_CAMPAIGNS, method = GET)
     public ResponseEntity<?> getCampaigns() {
         return getService.getAdCampains();
     }
 
-    @RequestMapping(value = AD_CAMPAIGN, method = RequestMethod.POST)
+    @RequestMapping(value = AD_CAMPAIGN, method = POST)
     public ResponseEntity<?> createAdCampaign(@RequestBody @Valid AdCampaignCreateRequest request, BindingResult result) {
         validationService.validateCreateRequest(result);
         return createService.create(request);
     }
 
 
-    @RequestMapping(value = AD_CAMPAIGN_SEARCH, method = RequestMethod.POST)
+    @RequestMapping(value = AD_CAMPAIGN_SEARCH, method = POST)
     public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest searchRequest) {
         AdCampaignSearch searchService = searchFactory.getSearchService(searchRequest);
         return searchService.search(searchRequest);
     }
 
-    @RequestMapping(value = "/adcampaign/{uuid}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/adcampaign/{uuid}", method = PUT)
     public ResponseEntity<?> updateAdCampaign(@RequestBody AdCampaignUpdateRequest updateRequest, @PathVariable("uuid") String uuid) {
         return updateService.updateCampaign(updateRequest, uuid);
     }
 
-//    @RequestMapping(value = "/adcampaign/{uuid}", method = RequestMethod.PATCH)
-    @RequestMapping(value = AD_CAMPAIGN, method = RequestMethod.PATCH)
+    @RequestMapping(value = AD_CAMPAIGN, method = PATCH)
     public ResponseEntity<?> patchAdCampaign(@RequestBody Map<String, String> requestMap){//, @PathVariable("uuid") String uuid) {
         if(CollectionUtils.isEmpty(requestMap)){
             return ResponseEntity.badRequest().body("Valid fields are: ad_content");

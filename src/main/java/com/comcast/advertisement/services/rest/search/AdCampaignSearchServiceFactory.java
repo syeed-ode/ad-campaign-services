@@ -32,16 +32,20 @@ public class AdCampaignSearchServiceFactory {
 
     public AdCampaignSearch getSearchService(AdCampaignSearchRequest request) {
         if(!StringUtils.isEmpty(request.getDuration())){
-            if(StringUtils.isEmpty(request.getAdTitle())){
-                return adCampaignSearchByDuration;
-            } else {
-                return adCampaignSearchByDurationAndTitle;
-            }
+            return getDurationService(request);
         } else if(!StringUtils.isEmpty(request.getAdTitle())) {
             return adCampaignSearchByTitle;
         } else if(!StringUtils.isEmpty(request.getAdContent())){
             return adCampaignSearchByContent;
         }
         return adCampaignSearchNoOperationalSearch;
+    }
+
+    private AdCampaignSearch getDurationService(AdCampaignSearchRequest request) {
+        if(StringUtils.isEmpty(request.getAdTitle())){
+            return adCampaignSearchByDuration;
+        } else {
+            return adCampaignSearchByDurationAndTitle;
+        }
     }
 }

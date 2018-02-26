@@ -1,6 +1,6 @@
 package com.comcast.advertisement.controller;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
 import com.comcast.advertisement.services.rest.AdCampaignGetService;
 import com.comcast.advertisement.services.rest.AdCampaignUpdateService;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.stream.Stream;
 
-import static com.comcast.advertisement.controller.AdCampaignResponse.from;
+import static com.comcast.advertisement.controller.dto.AdCompaignBuilder.build;
 import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGNS;
 import static java.util.stream.Collectors.toSet;
 import static org.mockito.BDDMockito.given;
@@ -71,7 +71,7 @@ public class POST_AdCampaignControllerTest {
     }
 
     private ResponseEntity<?> getResponseSet() {
-        return ResponseEntity.ok().body(Stream.of(from(new CampaignEntity())).collect(toSet()));
+        return ResponseEntity.ok().body(Stream.of(build(new CampaignEntity())).collect(toSet()));
     }
 
 }

@@ -1,8 +1,9 @@
 package com.comcast.advertisement.services.rest.search;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.controller.AdCampaignSearchRequest;
+import com.comcast.advertisement.controller.dto.AdCompaignBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.comcast.advertisement.controller.AdCampaignResponse.from;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -37,8 +37,8 @@ public class AdCampaignSearchByDuration implements AdCampaignSearch {
         }
         return ResponseEntity.ok().body(activeCampainsByDate
                 .stream()
-                .map(e -> from(e))
                 .filter(Objects::nonNull)
+                .map(AdCompaignBuilder::build)
                 .collect(Collectors.toSet()));
     }
 }

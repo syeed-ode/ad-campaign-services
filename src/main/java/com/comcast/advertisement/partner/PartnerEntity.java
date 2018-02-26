@@ -1,6 +1,6 @@
 package com.comcast.advertisement.partner;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 
 import javax.persistence.*;
 import java.util.HashSet;

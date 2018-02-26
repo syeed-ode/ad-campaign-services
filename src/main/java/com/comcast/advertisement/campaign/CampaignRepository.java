@@ -1,9 +1,8 @@
 package com.comcast.advertisement.campaign;
 
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.partner.PartnerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

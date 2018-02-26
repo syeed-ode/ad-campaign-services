@@ -1,7 +1,7 @@
 package com.comcast.advertisement.services.rest.search;
 
-import com.comcast.advertisement.campaign.CampaignEntity;
 import com.comcast.advertisement.campaign.CampaignRepository;
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.controller.AdCampaignSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import javax.inject.Named;
 import java.util.Objects;
 
-import static com.comcast.advertisement.controller.AdCampaignResponse.from;
+import static com.comcast.advertisement.controller.dto.AdCompaignBuilder.build;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -31,6 +31,6 @@ public class AdCampaignSearchByTitle implements AdCampaignSearch {
         if(Objects.isNull(campaignEntiyByTitle)){
             return ResponseEntity.status(NOT_FOUND).body("No entries found matching title: " + title);
         }
-        return ResponseEntity.ok().body(from(campaignEntiyByTitle));
+        return ResponseEntity.ok().body(build(campaignEntiyByTitle));
     }
 }
