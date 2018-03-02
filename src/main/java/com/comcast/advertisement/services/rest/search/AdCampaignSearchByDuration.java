@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.comcast.advertisement.dal.JPAUtility.getEntityManager;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -32,6 +35,23 @@ public class AdCampaignSearchByDuration implements AdCampaignSearch {
         String duration = request.getDuration();
         Integer timeToLookFor = Integer.valueOf(duration);
         List<CampaignEntity> activeCampainsByDate = campaignRepo.findByExpirationDateIsGreaterThanEqual(timeToLookFor);
+        if(CollectionUtils.isEmpty(activeCampainsByDate)){
+            return ResponseEntity.status(NOT_FOUND).body("No entries found matching duration: " + duration);
+        }
+        return ResponseEntity.ok().body(activeCampainsByDate
+                .stream()
+                .filter(Objects::nonNull)
+                .map(AdCompaignBuilder::build)
+                .collect(Collectors.toSet()));
+    }
+
+    public static ResponseEntity<?> duration(AdCampaignSearchRequest request) {
+        String duration = request.getDuration();
+        Integer timeToLookFor = Integer.valueOf(duration);
+        EntityManager entityManager = getEntityManager();
+        Query query = entityManager.createQuery("select * from CAMPAIGN where expiration_in_epoch = ?");
+        query.setParameter(1, duration);
+        List<CampaignEntity>  activeCampainsByDate = (List<CampaignEntity>) query.getResultList();
         if(CollectionUtils.isEmpty(activeCampainsByDate)){
             return ResponseEntity.status(NOT_FOUND).body("No entries found matching duration: " + duration);
         }

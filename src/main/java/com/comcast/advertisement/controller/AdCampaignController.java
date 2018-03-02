@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Map;
 
-import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGN;
-import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGNS;
-import static com.comcast.advertisement.utilities.AdCampaignConstants.AD_CAMPAIGN_SEARCH;
+import static com.comcast.advertisement.utilities.AdCampaignConstants.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
@@ -64,14 +62,22 @@ public class AdCampaignController {
         return createService.create(request);
     }
 
-
     @RequestMapping(value = AD_CAMPAIGN_SEARCH, method = POST)
     public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest searchRequest) {
         AdCampaignSearch searchService = searchFactory.getSearchService(searchRequest);
         return searchService.search(searchRequest);
     }
 
-    @RequestMapping(value = "/adcampaign/{uuid}", method = PUT)
+    @RequestMapping(value = AD_CAMPAIGN_SEARCH_ENUM, method = POST)
+    public ResponseEntity<?> findAdCampaignByEnum(@RequestBody AdCampaignSearchRequest searchRequest) {
+        return searchFactory.getSearchEnum(searchRequest)
+                .stream()
+                .map(ops -> ops.performSerch(searchRequest))
+                .findFirst()
+                .get();
+    }
+
+    @RequestMapping(value = AD_CAMPAIGN_UUID_PARAM, method = PUT)
     public ResponseEntity<?> updateAdCampaign(@RequestBody AdCampaignUpdateRequest updateRequest, @PathVariable("uuid") String uuid) {
         return updateService.updateCampaign(updateRequest, uuid);
     }

@@ -13,4 +13,6 @@ public class AdCampaignConstants {
     public static final String AD_CAMPAIGNS = "/adcampaigns";
     public static final String AD_CAMPAIGN  = "/adcampaign";
     public static final String AD_CAMPAIGN_SEARCH  = "/adcampaign/search";
+    public static final String AD_CAMPAIGN_SEARCH_ENUM  = "/adcampaign/searchenum";
+    public static final String AD_CAMPAIGN_UUID_PARAM  = "/adcampaign/{uuid}";
 }

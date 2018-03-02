@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.comcast.advertisement.dal.JPAUtility.getEntityManager;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -34,6 +37,31 @@ public class AdCampaignSearchByDurationAndTitle implements AdCampaignSearch {
         Integer timeToLookFor = Integer.valueOf(duration);
         List<CampaignEntity> activeCampainsByDate = campaignRepo
                 .findByCampaignTitleAndExpirationDateIsGreaterThanEqual(title, timeToLookFor);
+        if(CollectionUtils.isEmpty(activeCampainsByDate)){
+            return ResponseEntity.status(NOT_FOUND)
+                    .body("No entries found matchng duration: " + duration
+                            + " or title: " + title);
+        }
+        return ResponseEntity.ok().body(activeCampainsByDate
+                .stream()
+                .filter(Objects::nonNull)
+                .map(AdCompaignBuilder::build)
+                .collect(Collectors.toSet()));
+    }
+
+    public static ResponseEntity<?> durationAndTitles(AdCampaignSearchRequest request) {
+        String duration = request.getDuration();
+        String title = request.getAdTitle();
+        Integer timeToLookFor = Integer.valueOf(duration);
+        EntityManager entityManager = getEntityManager();
+        Query query = entityManager.createQuery(
+                "select * " +
+                        "from CAMPAIGN " +
+                        "where expiration_in_epoch = ? " +
+                        "and title = ?");
+        query.setParameter(1, timeToLookFor);
+        query.setParameter(2, title);
+        List<CampaignEntity>  activeCampainsByDate = (List<CampaignEntity>) query.getResultList();
         if(CollectionUtils.isEmpty(activeCampainsByDate)){
             return ResponseEntity.status(NOT_FOUND)
                     .body("No entries found matchng duration: " + duration

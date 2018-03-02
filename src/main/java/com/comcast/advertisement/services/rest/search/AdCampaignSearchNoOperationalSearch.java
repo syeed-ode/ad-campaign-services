@@ -1,7 +1,6 @@
 package com.comcast.advertisement.services.rest.search;
 
 import com.comcast.advertisement.controller.AdCampaignSearchRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 
 import javax.inject.Named;
@@ -19,6 +18,10 @@ public class AdCampaignSearchNoOperationalSearch implements AdCampaignSearch {
 
     @Override
     public ResponseEntity<?> search(AdCampaignSearchRequest request) {
+        return ResponseEntity.status(BAD_REQUEST).body("Only duration, ad_content, ad_title are valid");
+    }
+
+    public static ResponseEntity<?> noop(AdCampaignSearchRequest request) {
         return ResponseEntity.status(BAD_REQUEST).body("Only duration, ad_content, ad_title are valid");
     }
 }
