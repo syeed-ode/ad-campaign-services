@@ -7,6 +7,7 @@ import com.comcast.advertisement.controller.dto.AdCompaignBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.comcast.advertisement.dal.JPAUtility.getEntityManager;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -27,6 +29,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Named
 public class AdCampaignSearchByDurationAndTitle implements AdCampaignSearch {
 
+    private static final String QUERY_STRING = "select c from CAMPAIGN c " +
+            "where c.expirationDate = ?1 " +
+            "and c.campaignTitle = ?2";
+
     @Autowired
     CampaignRepository campaignRepo;
 
@@ -37,7 +43,7 @@ public class AdCampaignSearchByDurationAndTitle implements AdCampaignSearch {
         Integer timeToLookFor = Integer.valueOf(duration);
         List<CampaignEntity> activeCampainsByDate = campaignRepo
                 .findByCampaignTitleAndExpirationDateIsGreaterThanEqual(title, timeToLookFor);
-        if(CollectionUtils.isEmpty(activeCampainsByDate)){
+        if (CollectionUtils.isEmpty(activeCampainsByDate)) {
             return ResponseEntity.status(NOT_FOUND)
                     .body("No entries found matchng duration: " + duration
                             + " or title: " + title);
@@ -49,28 +55,20 @@ public class AdCampaignSearchByDurationAndTitle implements AdCampaignSearch {
                 .collect(Collectors.toSet()));
     }
 
-    public static ResponseEntity<?> durationAndTitles(AdCampaignSearchRequest request) {
-        String duration = request.getDuration();
-        String title = request.getAdTitle();
-        Integer timeToLookFor = Integer.valueOf(duration);
+    public static List<CampaignEntity> durationAndTitles(final AdCampaignSearchRequest request) {
+        final String duration = request.getDuration();
+        final String title = request.getAdTitle();
+        final Integer timeToLookFor = Integer.valueOf(duration);
+        Query query = getQuery(title, timeToLookFor);
+        List<CampaignEntity> activeCampainsByDate = (List<CampaignEntity>) query.getResultList();
+        return activeCampainsByDate;
+    }
+
+    private static Query getQuery(String title, Integer timeToLookFor) {
         EntityManager entityManager = getEntityManager();
-        Query query = entityManager.createQuery(
-                "select * " +
-                        "from CAMPAIGN " +
-                        "where expiration_in_epoch = ? " +
-                        "and title = ?");
+        Query query = entityManager.createQuery(QUERY_STRING);
         query.setParameter(1, timeToLookFor);
         query.setParameter(2, title);
-        List<CampaignEntity>  activeCampainsByDate = (List<CampaignEntity>) query.getResultList();
-        if(CollectionUtils.isEmpty(activeCampainsByDate)){
-            return ResponseEntity.status(NOT_FOUND)
-                    .body("No entries found matchng duration: " + duration
-                            + " or title: " + title);
-        }
-        return ResponseEntity.ok().body(activeCampainsByDate
-                .stream()
-                .filter(Objects::nonNull)
-                .map(AdCompaignBuilder::build)
-                .collect(Collectors.toSet()));
+        return query;
     }
 }

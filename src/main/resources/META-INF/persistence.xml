@@ -1,0 +1,34 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="manager1" transaction-type="RESOURCE_LOCAL">
+        <!--<provider>
+        You do not have to define it if you don't work with several EJB3
+        implementations. This is needed when you are using multiple vendor
+        implementations of EJB Persistence.
+        .</provider>-->
+        <!--<provider>org.hibernate.ejb.HibernatePersistence</provider>-->
+        <!--<jta-data-source>
+        This is the JNDI name of where the javax.sql.DataSource is located.
+        When running without a JNDI available Datasource, you must specify
+        JDBC connections with Hibernate specific properties (see below).
+        </jta-data-source>-->
+        <!--<jta-data-source>java:/DefaultDS</jta-data-source>-->
+        <!--<mapping-file>ormap.xml</mapping-file>-->
+        <!--<jar-file>MyApp.jar</jar-file>-->
+        <class>com.comcast.advertisement.campaign.dto.CampaignEntity</class>
+        <class>com.comcast.advertisement.partner.PartnerEntity</class>
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <validation-mode>AUTO</validation-mode>
+        <properties>
+            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>-->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
+            <!--<property name="javax.persistence.jdbc.driver" value=""/>-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ad-campaign?serverTimezone=UTC"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="1104regho"/>
+        </properties>
+    </persistence-unit>
+</persistence>

@@ -55,15 +55,26 @@ public class AdCampaignSearchServiceFactory {
 
     public Set<SearchOps> getSearchEnum(AdCampaignSearchRequest request) {
         Set<SearchOps> searchOpsSet = new HashSet<>();
+        boolean noop = true;
         if(!StringUtils.isEmpty(request.getDuration())){
             searchOpsSet.add(getDurationEnum(request));
-        } else if(!StringUtils.isEmpty(request.getAdTitle())) {
+            noop = false;
+        }
+
+        if(!StringUtils.isEmpty(request.getAdTitle())) {
             searchOpsSet.add(AD_TITLE);
-        } else if(!StringUtils.isEmpty(request.getAdContent())){
+            noop = false;
+        }
+
+        if(!StringUtils.isEmpty(request.getAdContent())){
             searchOpsSet.add(AD_CONTENT);
-        } else {
+            noop = false;
+        }
+
+        if(noop) {
             searchOpsSet.add(NO_OP);
         }
+
         return searchOpsSet;
     }
 

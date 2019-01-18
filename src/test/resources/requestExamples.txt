@@ -1,0 +1,28 @@
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"partner_id":"1","duration":"86400", "ad_content":"any content will do", "ad_title":"Title", "ad_status":"Active"}' \
+  http://127.0.0.1:8080/adcampaign
+
+
+
+
+// Content SUCCESS
+  curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"ad_content":"any content will do"}' \
+  http://127.0.0.1:8080/adcampaign/searchenum
+
+
+// duration SUCCESS
+  curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"duration":"86400"}' \
+  http://127.0.0.1:8080/adcampaign/searchenum
+
+
+// title SUCCESS
+  curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"duration":"86400"}' \
+  http://127.0.0.1:8080/adcampaign/searchenum
+

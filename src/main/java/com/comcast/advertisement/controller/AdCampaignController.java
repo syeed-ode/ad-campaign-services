@@ -1,10 +1,12 @@
 package com.comcast.advertisement.controller;
 
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
 import com.comcast.advertisement.services.rest.AdCampaignGetService;
 import com.comcast.advertisement.services.rest.AdCampaignUpdateService;
 import com.comcast.advertisement.services.rest.patch.AdCampaignPatchService;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearch;
+import com.comcast.advertisement.services.rest.search.AdCampaignSearchRespBuilder;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceFactory;
 import com.comcast.advertisement.validation.AdValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.comcast.advertisement.utilities.AdCampaignConstants.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -46,6 +49,9 @@ public class AdCampaignController {
     @Autowired
     AdCampaignPatchService patchService;
 
+    @Autowired
+    AdCampaignSearchRespBuilder builder;
+
     @RequestMapping(value = AD_CAMPAIGN, method = GET)
     public ResponseEntity<?> getCampaign(@RequestParam(value="uuid") String uuidRequested) {
         return getService.getAdCampain(uuidRequested);
@@ -68,13 +74,15 @@ public class AdCampaignController {
         return searchService.search(searchRequest);
     }
 
-    @RequestMapping(value = AD_CAMPAIGN_SEARCH_ENUM, method = POST)
+    @RequestMapping(value = AD_CAMPAIGN_SEARCH_ENUM, method = GET)
     public ResponseEntity<?> findAdCampaignByEnum(@RequestBody AdCampaignSearchRequest searchRequest) {
-        return searchFactory.getSearchEnum(searchRequest)
-                .stream()
-                .map(ops -> ops.performSerch(searchRequest))
-                .findFirst()
-                .get();
+         Set<CampaignEntity> entitySet = (Set<CampaignEntity>) null;
+         return builder.buildSearchResponse(searchFactory
+                 .getSearchEnum(searchRequest)
+                 .stream()
+                 .map(ops -> ops.performSerch(searchRequest))
+                 .flatMap(list -> list.stream())
+                 .collect(Collectors.toSet()));
     }
 
     @RequestMapping(value = AD_CAMPAIGN_UUID_PARAM, method = PUT)

@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ public class AdCampaignSearchByContent implements AdCampaignSearch {
 
     @Autowired
     CampaignRepository campaignRepo;
+    private static final String queryString = "SELECT c FROM CAMPAIGN c WHERE c.campaignContent = :content";
 
     @Override
     public ResponseEntity<?> search(AdCampaignSearchRequest request) {
@@ -43,18 +45,11 @@ public class AdCampaignSearchByContent implements AdCampaignSearch {
                 .collect(Collectors.toSet()));
     }
 
-    public static ResponseEntity<?> content(AdCampaignSearchRequest request) {
-        String content = request.getAdContent();
-        EntityManager entityManager = JPAUtility.getEntityManager();
-        List<CampaignEntity>  campaignEntityByContent = entityManager.find(List.class, content);
-
-        if(CollectionUtils.isEmpty(campaignEntityByContent)){
-            return ResponseEntity.status(NOT_FOUND).body("No entries found matchng content: " + content);
-        }
-        return ResponseEntity.ok().body(campaignEntityByContent
-                .stream()
-                .map(AdCompaignBuilder::build)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet()));
+    public static List<CampaignEntity> content(final AdCampaignSearchRequest request) {
+        final String content = request.getAdContent();
+        TypedQuery<CampaignEntity> query = JPAUtility.getEntityManager().createQuery(queryString, CampaignEntity.class);
+        query.setParameter("content", content);
+        List<CampaignEntity> campaignEntityByContent = query.getResultList();
+        return campaignEntityByContent;
     }
 }

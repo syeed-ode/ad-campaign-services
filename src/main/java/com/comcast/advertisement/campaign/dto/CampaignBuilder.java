@@ -3,6 +3,8 @@ package com.comcast.advertisement.campaign.dto;
 import com.comcast.advertisement.campaign.CampaignDto;
 import com.comcast.advertisement.campaign.CampaignStatusEnum;
 
+import static com.comcast.advertisement.campaign.CampaignStatusEnum.from;
+
 /**
  * Ad Service Application
  * <p>
@@ -22,7 +24,7 @@ public class CampaignBuilder {
     }
 
     public CampaignBuilder campaignTitle(String title) {
-        campaignContent = title;
+        campaignTitle = title;
         return this;
     }
 
@@ -49,6 +51,7 @@ public class CampaignBuilder {
         CampaignBuilder builder = new CampaignBuilder();
         builder.campaignContent(dto.getCampainContent())
                 .campaignTitle(dto.getCampainTitle())
+                .campaignStatus(from(dto.getAdStatus()))
                 .compaignUuid(uuid)
                 .expirationDate(dto.getExpirationDateInSeconds());
         return new CampaignEntity(builder);

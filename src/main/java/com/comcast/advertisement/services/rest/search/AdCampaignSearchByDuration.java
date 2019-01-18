@@ -7,6 +7,7 @@ import com.comcast.advertisement.controller.dto.AdCompaignBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.comcast.advertisement.dal.JPAUtility.getEntityManager;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -26,6 +28,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  */
 @Named
 public class AdCampaignSearchByDuration implements AdCampaignSearch {
+
+    private static final String QUERY_STRING = "select c from CAMPAIGN c where c.expirationDate = ?1";
 
     @Autowired
     CampaignRepository campaignRepo;
@@ -45,20 +49,14 @@ public class AdCampaignSearchByDuration implements AdCampaignSearch {
                 .collect(Collectors.toSet()));
     }
 
-    public static ResponseEntity<?> duration(AdCampaignSearchRequest request) {
-        String duration = request.getDuration();
-        Integer timeToLookFor = Integer.valueOf(duration);
+    public static List<CampaignEntity> duration(final AdCampaignSearchRequest request) {
+        final String duration = request.getDuration();
+        final Integer timeToLookFor = Integer.valueOf(duration);
+
         EntityManager entityManager = getEntityManager();
-        Query query = entityManager.createQuery("select * from CAMPAIGN where expiration_in_epoch = ?");
-        query.setParameter(1, duration);
+        Query query = entityManager.createQuery(QUERY_STRING);
+        query.setParameter(1, timeToLookFor);
         List<CampaignEntity>  activeCampainsByDate = (List<CampaignEntity>) query.getResultList();
-        if(CollectionUtils.isEmpty(activeCampainsByDate)){
-            return ResponseEntity.status(NOT_FOUND).body("No entries found matching duration: " + duration);
-        }
-        return ResponseEntity.ok().body(activeCampainsByDate
-                .stream()
-                .filter(Objects::nonNull)
-                .map(AdCompaignBuilder::build)
-                .collect(Collectors.toSet()));
+        return activeCampainsByDate;
     }
 }

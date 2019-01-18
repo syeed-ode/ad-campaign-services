@@ -12,7 +12,9 @@ public class JPAUtility {
     private static final EntityManagerFactory emFactory;
 
     static {
-        emFactory = Persistence.createEntityManagerFactory("com.concretepage");
+        // Extended persistence context
+        // Entity manager is retrieved from a JNDI lookup
+        emFactory = Persistence.createEntityManagerFactory("manager1");
     }
 
     public static EntityManager getEntityManager(){
