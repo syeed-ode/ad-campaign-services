@@ -68,7 +68,7 @@ public class AdCampaignController {
         return createService.create(request);
     }
 
-    @RequestMapping(value = AD_CAMPAIGN_SEARCH, method = POST)
+    @RequestMapping(value = AD_CAMPAIGN_SEARCH, method = GET)
     public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest searchRequest) {
         AdCampaignSearch searchService = searchFactory.getSearchService(searchRequest);
         return searchService.search(searchRequest);
