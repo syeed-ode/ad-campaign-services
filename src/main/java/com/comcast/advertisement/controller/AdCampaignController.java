@@ -4,8 +4,7 @@ import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
 import com.comcast.advertisement.services.rest.AdCampaignGetService;
 import com.comcast.advertisement.services.rest.AdCampaignUpdateService;
-import com.comcast.advertisement.services.rest.patch.AdCampaignPatchService;
-import com.comcast.advertisement.services.rest.search.AdCampaignSearch;
+import com.comcast.advertisement.services.rest.search.AdCampaignSearchService;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearchRespBuilder;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceFactory;
 import com.comcast.advertisement.validation.AdValidationService;
@@ -47,13 +46,10 @@ public class AdCampaignController {
     AdCampaignUpdateService updateService;
 
     @Autowired
-    AdCampaignPatchService patchService;
-
-    @Autowired
     AdCampaignSearchRespBuilder builder;
 
-    @RequestMapping(value = AD_CAMPAIGN, method = GET)
-    public ResponseEntity<?> getCampaign(@RequestParam(value="uuid") String uuidRequested) {
+    @RequestMapping(value = AD_CAMPAIGN_UUID_PARAM, method = GET)
+    public ResponseEntity<?> getCampaign(@PathVariable("uuid")  String uuidRequested) {
         return getService.getAdCampain(uuidRequested);
     }
 
@@ -70,8 +66,11 @@ public class AdCampaignController {
 
     @RequestMapping(value = AD_CAMPAIGN_SEARCH, method = GET)
     public ResponseEntity<?> findAdCampaign(@RequestBody AdCampaignSearchRequest searchRequest) {
-        AdCampaignSearch searchService = searchFactory.getSearchService(searchRequest);
-        return searchService.search(searchRequest);
+        Set<AdCampaignSearchService> searchServiceSet = searchFactory.getSearchService(searchRequest);
+        return builder.buildSearchResponse(searchServiceSet.stream()
+                .map(searchService -> searchService.search(searchRequest))
+                .flatMap(list -> list.stream())
+                .collect(Collectors.toSet()));
     }
 
     @RequestMapping(value = AD_CAMPAIGN_SEARCH_ENUM, method = GET)
@@ -88,13 +87,5 @@ public class AdCampaignController {
     @RequestMapping(value = AD_CAMPAIGN_UUID_PARAM, method = PUT)
     public ResponseEntity<?> updateAdCampaign(@RequestBody AdCampaignUpdateRequest updateRequest, @PathVariable("uuid") String uuid) {
         return updateService.updateCampaign(updateRequest, uuid);
-    }
-
-    @RequestMapping(value = AD_CAMPAIGN, method = PATCH)
-    public ResponseEntity<?> patchAdCampaign(@RequestBody Map<String, String> requestMap){//, @PathVariable("uuid") String uuid) {
-        if(CollectionUtils.isEmpty(requestMap)){
-            return ResponseEntity.badRequest().body("Valid fields are: ad_content");
-        }
-        return patchService.patch(requestMap);
     }
 }

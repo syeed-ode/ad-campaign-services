@@ -20,36 +20,46 @@ import static com.comcast.advertisement.services.rest.search.SearchOps.*;
 public class AdCampaignSearchServiceFactory {
 
     @Inject
-    AdCampaignSearch adCampaignSearchByContent;
+    AdCampaignSearchService adCampaignSearchServiceByContent;
 
     @Inject
-    AdCampaignSearch adCampaignSearchByDuration;
+    AdCampaignSearchService adCampaignSearchServiceByDuration;
 
     @Inject
-    AdCampaignSearch adCampaignSearchByDurationAndTitle;
+    AdCampaignSearchService adCampaignSearchServiceByDurationAndTitle;
 
     @Inject
-    AdCampaignSearch adCampaignSearchByTitle;
+    AdCampaignSearchService adCampaignSearchServiceByTitle;
 
     @Inject
-    AdCampaignSearch adCampaignSearchNoOperationalSearch;
+    AdCampaignSearchService adCampaignSearchNoOperationalSearchService;
 
-    public AdCampaignSearch getSearchService(AdCampaignSearchRequest request) {
+    public Set<AdCampaignSearchService> getSearchService(final AdCampaignSearchRequest request) {
+        Set<AdCampaignSearchService> searchServiceSet = new HashSet<>();
+        boolean noop = true;
         if(!StringUtils.isEmpty(request.getDuration())){
-            return getDurationService(request);
-        } else if(!StringUtils.isEmpty(request.getAdTitle())) {
-            return adCampaignSearchByTitle;
-        } else if(!StringUtils.isEmpty(request.getAdContent())){
-            return adCampaignSearchByContent;
+            searchServiceSet.add(getDurationService(request));
+            noop = false;
         }
-        return adCampaignSearchNoOperationalSearch;
+        if(!StringUtils.isEmpty(request.getAdTitle())) {
+            searchServiceSet.add(adCampaignSearchServiceByTitle);
+            noop = false;
+        }
+        if(!StringUtils.isEmpty(request.getAdContent())){
+            searchServiceSet.add(adCampaignSearchServiceByContent);
+            noop = false;
+        }
+        if(noop) {
+            searchServiceSet.add(adCampaignSearchNoOperationalSearchService);
+        }
+        return searchServiceSet;
     }
 
-    private AdCampaignSearch getDurationService(AdCampaignSearchRequest request) {
+    private AdCampaignSearchService getDurationService(AdCampaignSearchRequest request) {
         if(StringUtils.isEmpty(request.getAdTitle())){
-            return adCampaignSearchByDuration;
+            return adCampaignSearchServiceByDuration;
         } else {
-            return adCampaignSearchByDurationAndTitle;
+            return adCampaignSearchServiceByDurationAndTitle;
         }
     }
 

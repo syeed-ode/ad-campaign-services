@@ -18,15 +18,14 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
  * Date: 7/14/17
  */
 @Named
-public class AdCampaignSearchNoOperationalSearch implements AdCampaignSearch {
+public class AdCampaignSearchNoOperationalSearchService implements AdCampaignSearchService {
 
     @Override
-    public ResponseEntity<?> search(AdCampaignSearchRequest request) {
-        return ResponseEntity.status(BAD_REQUEST).body("Only duration, ad_content, ad_title are valid");
+    public List<CampaignEntity> search(AdCampaignSearchRequest request) {
+        return new ArrayList<>();
     }
 
     public static List<CampaignEntity> noop(AdCampaignSearchRequest request) {
         return new ArrayList<>();
-//        return ResponseEntity.status(BAD_REQUEST).body("Only duration, ad_content, ad_title are valid");
     }
 }

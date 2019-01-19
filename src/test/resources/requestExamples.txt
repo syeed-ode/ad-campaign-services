@@ -1,28 +1,161 @@
+// create SUCCESS - AD_CAMPAIGN, method = POST
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"partner_id":"1","duration":"86400", "ad_content":"any content will do", "ad_title":"Title", "ad_status":"Active"}' \
   http://127.0.0.1:8080/adcampaign
 
-
-
-
-// Content SUCCESS
-  curl --header "Content-Type: application/json" \
+// create SUCCESS - AD_CAMPAIGN, method = POST
+curl --header "Content-Type: application/json" \
   --request POST \
+  --data '{"partner_id":"1","duration":"172800", "ad_content":"but some conent is not enough", "ad_title":"New Title", "ad_status":"Inactive"}' \
+  http://127.0.0.1:8080/adcampaign
+
+
+
+
+// Content SUCCESS - AD_CAMPAIGN_SEARCH_ENUM
+  curl --header "Content-Type: application/json" \
+  --request GET \
   --data '{"ad_content":"any content will do"}' \
   http://127.0.0.1:8080/adcampaign/searchenum
 
 
-// duration SUCCESS
+// duration SUCCESS - AD_CAMPAIGN_SEARCH_ENUM
   curl --header "Content-Type: application/json" \
-  --request POST \
+  --request GET \
   --data '{"duration":"86400"}' \
   http://127.0.0.1:8080/adcampaign/searchenum
 
 
-// title SUCCESS
+// title SUCCESS - AD_CAMPAIGN_SEARCH_ENUM
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"ad_title":"Title"}' \
+  http://127.0.0.1:8080/adcampaign/searchenum
+
+// duration & title SUCCESS - AD_CAMPAIGN_SEARCH_ENUM
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"ad_title":"Title", "duration":"86400"}' \
+  http://127.0.0.1:8080/adcampaign/searchenum
+
+// duration & title & content SUCCESS - AD_CAMPAIGN_SEARCH_ENUM
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"ad_title":"Title", "duration":"86400", "ad_content":"any content will do"}' \
+  http://127.0.0.1:8080/adcampaign/searchenum
+
+// Content SUCCESS - AD_CAMPAIGN_SEARCH_ENUM
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"ad_content":"any content will do", "duration":"172800"}' \
+  http://127.0.0.1:8080/adcampaign/searchenum
+
+// update SUCCESS - AD_CAMPAIGN_UUID_PARAM, method = PUT
+  curl --header "Content-Type: application/json" \
+  --request PUT \
+  --data '{"ad_content":"Actually any content is better than no content"}' \
+  http://127.0.0.1:8080/adcampaign/cc6456e6-0ccd-450b-b293-3f87c4ad1410
+
+
+// get group SUCCESS - AD_CAMPAIGNS
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  http://127.0.0.1:8080/adcampaigns
+
+
+// get item SUCCESS - AD_CAMPAIGN_UUID_PARAM, method = GET
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  http://127.0.0.1:8080/adcampaign/cc6456e6-0ccd-450b-b293-3f87c4ad1410
+
+
+// duration SUCCESS - AD_CAMPAIGN_SEARCH
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"duration":"172800"}' \
+  http://127.0.0.1:8080/adcampaign/search
+
+// ad_content SUCCESS - AD_CAMPAIGN_SEARCH
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"ad_content":"but some conent is not enough"}' \
+  http://127.0.0.1:8080/adcampaign/search
+
+// ad_title SUCCESS - AD_CAMPAIGN_SEARCH
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"ad_title":"Title"}' \
+  http://127.0.0.1:8080/adcampaign/search
+
+// create SUCCESS - AD_CAMPAIGN, method = POST
   curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"duration":"86400"}' \
-  http://127.0.0.1:8080/adcampaign/searchenum
+  --data '{"partner_id":"3","duration":"259200", "ad_content":"Come see bastard, come see.", "ad_title":"Ramseys Greatest Words", "ad_status":"Active"}' \
+  http://127.0.0.1:8080/adcampaign
+
+// duration & title & conetn - AD_CAMPAIGN_SEARCH
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"duration":"86400","ad_title":"New Title","ad_content":"Come see bastard, come see."}' \
+  http://127.0.0.1:8080/adcampaign/search
+
+
+// duration & title & conetn - AD_CAMPAIGN_SEARCH
+  curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"duration":"86400","ad_title":"New Title","ad_content":"but some conent is not enough"}' \
+  http://127.0.0.1:8080/adcampaign/search
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

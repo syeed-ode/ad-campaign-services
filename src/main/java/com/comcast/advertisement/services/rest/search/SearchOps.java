@@ -2,16 +2,14 @@ package com.comcast.advertisement.services.rest.search;
 
 import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.controller.AdCampaignSearchRequest;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Set;
 
-import static com.comcast.advertisement.services.rest.search.AdCampaignSearchByContent.content;
-import static com.comcast.advertisement.services.rest.search.AdCampaignSearchByDuration.duration;
-import static com.comcast.advertisement.services.rest.search.AdCampaignSearchByDurationAndTitle.durationAndTitles;
-import static com.comcast.advertisement.services.rest.search.AdCampaignSearchByTitle.title;
-import static com.comcast.advertisement.services.rest.search.AdCampaignSearchNoOperationalSearch.noop;
+import static com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceByContent.content;
+import static com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceByDuration.duration;
+import static com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceByDurationAndTitle.durationAndTitles;
+import static com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceByTitle.title;
+import static com.comcast.advertisement.services.rest.search.AdCampaignSearchNoOperationalSearchService.noop;
 
 /**
  * Author: syeedode

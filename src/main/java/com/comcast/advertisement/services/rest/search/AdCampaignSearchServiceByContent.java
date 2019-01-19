@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Objects;
@@ -25,24 +24,16 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  * Date: 7/15/17
  */
 @Named
-public class AdCampaignSearchByContent implements AdCampaignSearch {
+public class AdCampaignSearchServiceByContent implements AdCampaignSearchService {
 
     @Autowired
     CampaignRepository campaignRepo;
     private static final String queryString = "SELECT c FROM CAMPAIGN c WHERE c.campaignContent = :content";
 
     @Override
-    public ResponseEntity<?> search(AdCampaignSearchRequest request) {
+    public List<CampaignEntity> search(AdCampaignSearchRequest request) {
         String content = request.getAdContent();
-        List<CampaignEntity> campaignEntityByContent = campaignRepo.findByCampaignContent(content);
-        if(CollectionUtils.isEmpty(campaignEntityByContent)){
-            return ResponseEntity.status(NOT_FOUND).body("No entries found matchng content: " + content);
-        }
-        return ResponseEntity.ok().body(campaignEntityByContent
-                .stream()
-                .map(AdCompaignBuilder::build)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet()));
+        return campaignRepo.findByCampaignContent(content);
     }
 
     public static List<CampaignEntity> content(final AdCampaignSearchRequest request) {

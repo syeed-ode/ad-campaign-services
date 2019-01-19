@@ -1,7 +1,10 @@
 package com.comcast.advertisement.services.rest.search;
 
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.controller.AdCampaignSearchRequest;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * Ad Service Application
@@ -9,6 +12,6 @@ import org.springframework.http.ResponseEntity;
  * Author: syeedode
  * Date: 7/14/17
  */
-public interface AdCampaignSearch {
-    ResponseEntity<?> search(AdCampaignSearchRequest request);
+public interface AdCampaignSearchService {
+    List<CampaignEntity> search(AdCampaignSearchRequest request);
 }
