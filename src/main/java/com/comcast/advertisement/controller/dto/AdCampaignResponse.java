@@ -1,5 +1,6 @@
 package com.comcast.advertisement.controller.dto;
 
+import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -37,6 +38,12 @@ public class AdCampaignResponse {
         this.adContent = builder.getAdContent();
         this.adTitle = builder.getAdTitle();
         this.adStatus = builder.getAdStatus();
+    }
+
+    public static AdCampaignResponse from(CampaignEntity entity) {
+        // have to implement later.
+        //
+        return new AdCampaignResponse(null);
     }
 
     public String getExternalPartnerId() {

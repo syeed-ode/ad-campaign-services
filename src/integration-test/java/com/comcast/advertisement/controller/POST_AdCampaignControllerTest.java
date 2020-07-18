@@ -4,6 +4,7 @@ import com.comcast.advertisement.campaign.dto.CampaignEntity;
 import com.comcast.advertisement.services.rest.AdCampaignCreateService;
 import com.comcast.advertisement.services.rest.AdCampaignGetService;
 import com.comcast.advertisement.services.rest.AdCampaignUpdateService;
+import com.comcast.advertisement.services.rest.patch.AdCampaignPatchService;
 import com.comcast.advertisement.services.rest.search.AdCampaignSearchServiceFactory;
 import com.comcast.advertisement.validation.AdValidationService;
 import org.junit.Test;

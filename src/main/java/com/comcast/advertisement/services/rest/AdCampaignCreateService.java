@@ -52,7 +52,7 @@ public class AdCampaignCreateService {
                 .build().toUri()).body(build(campaign));
     }
 
-    protected PartnerEntity createPartner(String externalPartnerId) {
+    private PartnerEntity createPartner(String externalPartnerId) {
         PartnerEntity partnerEntity = partnerRepo.findByExternalId(externalPartnerId);
         if(Objects.isNull(partnerEntity)) {
             PartnerEntity p = new PartnerEntity();

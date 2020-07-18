@@ -18,6 +18,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import static com.comcast.advertisement.campaign.CampaignStatusEnum.ACTIVE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -83,6 +86,16 @@ public class AdCampaignCreateServiceTest implements AdCampaignBaseTest {
         when(campaignRepo.save(any(CampaignEntity.class))).thenReturn(goodCampaignEntity());
 
         return service.createCampaign(dto());
+    }
+
+    @Test
+    public void createPartner_useReflection() throws Exception {
+        PartnerEntity result = partnerEntityGoPathMocks();
+        Method method = AdCampaignCreateService.class.getDeclaredMethod("createPartner", String.class);
+        method.setAccessible(true);
+
+        PartnerEntity output = (PartnerEntity) method.invoke(new AdCampaignCreateService(), PARTNER_ID);
+        assertNotNull(output);
     }
 
     @Test
